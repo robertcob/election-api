@@ -2,7 +2,10 @@ package config
 
 import (
 	"github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/qiangxue/go-env"
 	"github.com/qiangxue/go-rest-api/pkg/log"
+	"gopkg.in/yaml.v2"
+	"os"
 )
 
 const (
@@ -29,9 +32,29 @@ func (c Config) Validate() error {
 }
 
 func Load(file string, logger log.Logger) (*Config, error) {
-
 	c := Config{
 		ServerPort:    defaultServerPort,
 		JWTExpiration: defaultJWTExpirationHours,
 	}
+
+	// load from YAML config file
+	bytes, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+	if err = yaml.Unmarshal(bytes, &c); err != nil {
+		return nil, err
+	}
+
+	// load from environment variables prefixed with "APP_"
+	if err = env.New("APP_", logger.Infof).Load(&c); err != nil {
+		return nil, err
+	}
+
+	// validation
+	if err = c.Validate(); err != nil {
+		return nil, err
+	}
+
+	return &c, err
 }
