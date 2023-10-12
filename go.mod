@@ -2,7 +2,10 @@ module election-api
 
 go 1.20
 
-require github.com/qiangxue/go-rest-api v1.0.1
+require (
+	github.com/go-ozzo/ozzo-validation/v4 v4.1.0
+	github.com/qiangxue/go-rest-api v1.0.1
+)
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
