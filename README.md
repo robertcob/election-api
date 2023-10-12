@@ -1,2 +1,2 @@
 # election-api
-REST API for american election
+REST API for Irish election
