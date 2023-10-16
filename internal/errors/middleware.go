@@ -1,4 +1,4 @@
-package error
+package errors
 
 import (
 	"fmt"
@@ -19,28 +19,26 @@ func Handler(logger log.Logger) routing.Handler {
 				if err, ok = e.(error); !ok {
 					err = fmt.Errorf("%v", e)
 				}
-
 				l.Errorf("recovered from panic (%v): %s", err, debug.Stack())
 			}
-
 			if err != nil {
 				res := buildErrorResponse(err)
 				if res.StatusCode() == http.StatusInternalServerError {
-					l.Errorf("encountered internal server error: %v", err)
+					l.Errorf("encountered internal server errors: %v", err)
 				}
 				c.Response.WriteHeader(res.StatusCode())
 				if err = c.Write(res); err != nil {
-					l.Errorf("failed writing error response: %v", err)
+					l.Errorf("failed writing errors response: %v", err)
 				}
-				c.Abort() // skip any pending handlers since an error has occurred
-				err = nil // return nil because the error is already handled
+				c.Abort() // skip any pending handlers since an errors has occurred
+				err = nil // return nil because the errors is already handled
 			}
 		}()
 		return c.Next()
 	}
 }
 
-// buildErrorResponse builds an error response from an error.
+// buildErrorResponse builds an errors response from an errors.
 func buildErrorResponse(err error) ErrorResponse {
 	switch err.(type) {
 	case ErrorResponse:
@@ -58,6 +56,5 @@ func buildErrorResponse(err error) ErrorResponse {
 			}
 		}
 	}
-
 	return InternalServerError("")
 }

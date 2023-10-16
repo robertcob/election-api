@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
+	"election-api/internal/auth"
 	"election-api/internal/config"
-	customerr "election-api/internal/error"
+	customerr "election-api/internal/errors"
 	"errors"
 	"flag"
 	"fmt"
@@ -55,12 +56,14 @@ func buildHandler(logger log.Logger, cfg *config.Config) http.Handler {
 		content.TypeNegotiator(content.JSON),
 		cors.Handler(cors.AllowAll),
 	)
-
 	rg := router.Group("/v1")
 	//authHandler := auth.Handler(cfg.JWTSigningKey)
-	// TODO we can load our config here
-
-	// TODO we can create our dynamo db instance here
+	// register API handlers
+	auth.RegisterHandlers(rg.Group(""),
+		auth.NewService(cfg.JWTSigningKey, cfg.JWTExpiration, logger),
+		logger,
+	)
+	return router
 
 }
 
@@ -74,7 +77,7 @@ func GracefulShutdown(hs *http.Server, timeout time.Duration, logFunc func(forma
 	defer cancel()
 	logFunc("shutting down server with %s timeout", timeout)
 	if err := hs.Shutdown(ctx); err != nil {
-		logFunc("error while shutting down server: %v", err)
+		logFunc("errors while shutting down server: %v", err)
 	} else {
 		logFunc("server was shut down gracefully")
 	}

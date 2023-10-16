@@ -2,24 +2,23 @@ package auth
 
 import (
 	"context"
-	"github.com/dgrijalva/jwt-go"
+	"election-api/internal/errors"
 	"github.com/qiangxue/go-rest-api/pkg/log"
-	"time"
 )
 
 // Service encapsulates the authentication logic.
 type Service interface {
 	// Login authenticate authenticates a user using username and password.
-	// It returns a JWT token if authentication succeeds. Otherwise, an error is returned.
+	// It returns a JWT token if authentication succeeds. Otherwise, an errors is returned.
 	Login(ctx context.Context, username, password string) (string, error)
 }
 
 // Identity represents an authenticated user identity.
 type Identity interface {
 	// GetID returns the user ID.
-	GetID() string
-	// GetName returns the username.
-	GetName() string
+	//GetID() string
+	//// GetName returns the username.
+	//GetName() string
 }
 
 type service struct {
@@ -57,9 +56,10 @@ func (s service) authenticate(ctx context.Context) Identity {
 
 // generateJWT generates a JWT that encodes an identity.
 func (s service) generateJWT(identity Identity) (string, error) {
-	return jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":   identity.GetID(),
-		"name": identity.GetName(),
-		"exp":  time.Now().Add(time.Duration(s.tokenExpiration) * time.Hour).Unix(),
-	}).SignedString([]byte(s.signingKey))
+	//return jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	//	"id":   identity.GetID(),
+	//	"name": identity.GetName(),
+	//	"exp":  time.Now().Add(time.Duration(s.tokenExpiration) * time.Hour).Unix(),
+	//}).SignedString([]byte(s.signingKey))
+	return "", nil
 }

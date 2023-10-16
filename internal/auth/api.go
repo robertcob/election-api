@@ -1,6 +1,10 @@
 package auth
 
-import routing "github.com/go-ozzo/ozzo-routing/v2"
+import (
+	"election-api/internal/errors"
+	routing "github.com/go-ozzo/ozzo-routing/v2"
+	"github.com/qiangxue/go-rest-api/pkg/log"
+)
 
 func RegisterHandlers(rg *routing.RouteGroup, service Service, logger log.Logger) {
 	rg.Post("/login", login(service, logger))

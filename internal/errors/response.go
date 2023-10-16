@@ -1,4 +1,4 @@
-package error
+package errors
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
@@ -6,14 +6,14 @@ import (
 	"sort"
 )
 
-// ErrorResponse is the response that represents an error.
+// ErrorResponse is the response that represents an errors.
 type ErrorResponse struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
 	Details interface{} `json:"details,omitempty"`
 }
 
-// Error is required by the error interface.
+// Error is required by the errors interface.
 func (e ErrorResponse) Error() string {
 	return e.Message
 }
@@ -23,10 +23,10 @@ func (e ErrorResponse) StatusCode() int {
 	return e.Status
 }
 
-// InternalServerError creates a new error response representing an internal server error (HTTP 500)
+// InternalServerError creates a new errors response representing an internal server errors (HTTP 500)
 func InternalServerError(msg string) ErrorResponse {
 	if msg == "" {
-		msg = "We encountered an error while processing your request."
+		msg = "We encountered an errors while processing your request."
 	}
 	return ErrorResponse{
 		Status:  http.StatusInternalServerError,
@@ -34,7 +34,7 @@ func InternalServerError(msg string) ErrorResponse {
 	}
 }
 
-// NotFound creates a new error response representing a resource-not-found error (HTTP 404)
+// NotFound creates a new errors response representing a resource-not-found errors (HTTP 404)
 func NotFound(msg string) ErrorResponse {
 	if msg == "" {
 		msg = "The requested resource was not found."
@@ -45,7 +45,7 @@ func NotFound(msg string) ErrorResponse {
 	}
 }
 
-// Unauthorized creates a new error response representing an authentication/authorization failure (HTTP 401)
+// Unauthorized creates a new errors response representing an authentication/authorization failure (HTTP 401)
 func Unauthorized(msg string) ErrorResponse {
 	if msg == "" {
 		msg = "You are not authenticated to perform the requested action."
@@ -56,7 +56,7 @@ func Unauthorized(msg string) ErrorResponse {
 	}
 }
 
-// Forbidden creates a new error response representing an authorization failure (HTTP 403)
+// Forbidden creates a new errors response representing an authorization failure (HTTP 403)
 func Forbidden(msg string) ErrorResponse {
 	if msg == "" {
 		msg = "You are not authorized to perform the requested action."
@@ -67,7 +67,7 @@ func Forbidden(msg string) ErrorResponse {
 	}
 }
 
-// BadRequest creates a new error response representing a bad request (HTTP 400)
+// BadRequest creates a new errors response representing a bad request (HTTP 400)
 func BadRequest(msg string) ErrorResponse {
 	if msg == "" {
 		msg = "Your request is in a bad format."
@@ -80,10 +80,10 @@ func BadRequest(msg string) ErrorResponse {
 
 type invalidField struct {
 	Field string `json:"field"`
-	Error string `json:"error"`
+	Error string `json:"errors"`
 }
 
-// InvalidInput creates a new error response representing a data validation error (HTTP 400).
+// InvalidInput creates a new errors response representing a data validation errors (HTTP 400).
 func InvalidInput(errs validation.Errors) ErrorResponse {
 	var details []invalidField
 	var fields []string
