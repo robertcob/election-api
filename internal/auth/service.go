@@ -34,9 +34,9 @@ func NewService(signingKey string, tokenExpiration int, logger log.Logger) Servi
 }
 
 func (s service) Login(ctx context.Context, username, password string) (string, error) {
-	if identity := s.authenticate(ctx, username, password); identity != nil {
-		return s.generateJWT(identity)
-	}
+	//if identity := s.authenticate(ctx, username, password); identity != nil {
+	//	return s.generateJWT(identity)
+	//}
 	return "", errors.Unauthorized("")
 }
 
