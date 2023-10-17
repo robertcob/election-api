@@ -7,7 +7,6 @@ type Candidate struct {
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	State     string    `json:"state"`
 	County    string    `json:"county"`
 	Votes     int       `json:"votes"`
 }
