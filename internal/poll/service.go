@@ -21,5 +21,14 @@ type Poll struct {
 type CreatePollRequest struct {
 }
 
+// Validate for validating fields of request
+func (m CreatePollRequest) Validate() error {
+	return nil
+}
+
 type UpdatePollRequest struct {
+}
+
+func (m UpdatePollRequest) Validate() error {
+	return nil
 }
